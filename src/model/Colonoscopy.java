@@ -6,9 +6,10 @@ import java.util.Date;
 
 @Data
 public class Colonoscopy extends Test{
-    private final Double cost = 249.9;
+    private String preparingDrugs;
 
-    public Colonoscopy(String type, Patient patient, Doctor doctor, Date date){
-        super(type, patient, doctor, date);
+    public Colonoscopy(Patient patient, Doctor doctor, Date date, Integer noReservedMachine, String preparingDrugs){
+        super(patient, doctor, date, 450.0, noReservedMachine);
+        this.preparingDrugs = preparingDrugs;
     }
 }

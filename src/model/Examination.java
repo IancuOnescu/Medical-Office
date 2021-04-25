@@ -6,9 +6,10 @@ import java.util.Date;
 
 @Data
 public class Examination extends Appointment{
-    private final Integer cost = 200;
+    private String type;
 
-    public Examination(Patient patient, Doctor doctor, Date date){
-        super(patient, doctor, date);
+    public Examination(Patient patient, Doctor doctor, Date date, String type){
+        super(patient, doctor, date, 100.0);
+        this.type = type;
     }
 }

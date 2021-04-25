@@ -6,9 +6,10 @@ import java.util.Date;
 
 @Data
 public class Auscultation extends Test{
-    private final Double cost = 99.99;
+    private Double temperature;
 
-    public Auscultation(String type, Patient patient, Doctor doctor, Date date){
-        super(type, patient, doctor, date);
+    public Auscultation(Patient patient, Doctor doctor, Date date, Integer noReservedMachine, Double temperature){
+        super(patient, doctor, date, 100.0, noReservedMachine);
+        this.temperature = temperature;
     }
 }

@@ -7,12 +7,12 @@ import java.util.Date;
 
 @Data @AllArgsConstructor
 public abstract class Test extends Appointment{
-    private String type;
+    private Integer noReservedMachine;
 
     public Test(){}
 
-    public Test(String type, Patient patient, Doctor doctor, Date date){
-        super(patient, doctor, date);
-        this.type = type;
+    public Test(Patient patient, Doctor doctor, Date date, Double cost, Integer noReservedMachine){
+        super(patient, doctor, date, cost);
+        this.noReservedMachine = noReservedMachine;
     }
 }

@@ -37,13 +37,13 @@ public class OfficeService {
         TreeSet<Appointment> appointments = doctor.getAppointments();
 
         for(Appointment app : appointments)
-            if (app.getDate() == date)
+            if (app.getDate().equals(date))
                 return false;
 
         return true;
     }
 
-    public void makeAppointment(@NotNull Patient patient, @NotNull Doctor doctor, @NotNull Date date, String type){ //true if doctor is available
+    public void makeAppointment(@NotNull Patient patient, @NotNull Doctor doctor, @NotNull Date date, String type, String[] args){ //true if doctor is available
         if(!isAvailable(doctor, date)) {
             System.out.println("Ne pare rau, doctorul " + doctor.getLastName() + "nu este disponibil!");
             return;
@@ -53,13 +53,13 @@ public class OfficeService {
 
         switch (type) {
             case "Examination":
-                ap = new Examination(patient, doctor, date); break;
+                ap = new Examination(patient, doctor, date, args[0]); break;
             case "Endoscopy":
-                ap = new Endoscopy(type, patient, doctor, date); break;
+                ap = new Endoscopy(patient, doctor, date, Integer.parseInt(args[0]), args[1]); break;
             case "Colonoscopy":
-                ap = new Colonoscopy(type, patient, doctor, date); break;
+                ap = new Colonoscopy(patient, doctor, date, Integer.parseInt(args[0]), args[1]); break;
             case "Auscultation":
-                ap = new Auscultation(type, patient, doctor, date); break;
+                ap = new Auscultation(patient, doctor, date, Integer.parseInt(args[0]), Double.parseDouble(args[1])); break;
             default: return;
         }
         appointments.add(ap);
@@ -69,7 +69,7 @@ public class OfficeService {
         TreeSet<Appointment> appointments = doctor.getAppointments();
 
         for(Appointment ap : appointments)
-            if(ap.getDate() == date && ap.getPatient() == patient){
+            if(ap.getDate().equals(date) && ap.getPatient().equals(patient)){
                 appointments.remove(ap);
                 return;
             }
@@ -77,14 +77,14 @@ public class OfficeService {
     }
 
     public HashSet<Appointment> getPatientHistory(@NotNull Patient patient){
-        HashSet<Appointment> ret = new HashSet<Appointment>();
+        HashSet<Appointment> ret = new HashSet<>();
         HashSet<Doctor> doctors = this.office.getDoctors();
 
         for(Doctor doc : doctors){
             TreeSet<Appointment> appointments = doc.getAppointments();
 
             for(Appointment app : appointments)
-                if(app.getPatient() == patient)
+                if(app.getPatient().equals(patient))
                     ret.add(app);
         }
 
@@ -113,7 +113,7 @@ public class OfficeService {
         TreeSet<Appointment> fromApointments = fromDoctor.getAppointments();
 
         for(Appointment ap : fromApointments)
-            if(ap.getDate().equals(date) && ap.getPatient() == patient){
+            if(ap.getDate().equals(date) && ap.getPatient().equals(patient)){
                 ap.setDoctor(toDoctor);
                 fromApointments.remove(ap);
                 toApointments.add(ap);
@@ -123,7 +123,7 @@ public class OfficeService {
 
     public HashSet<Doctor> availableDoctors(Date date){
         HashSet<Doctor> doctors = this.office.getDoctors();
-        HashSet<Doctor> ret = new HashSet<Doctor>();
+        HashSet<Doctor> ret = new HashSet<>();
 
         for(Doctor doc : doctors)
             if(isAvailable(doc, date))

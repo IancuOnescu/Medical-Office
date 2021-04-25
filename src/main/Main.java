@@ -19,11 +19,16 @@ public class Main {
         //Prezentarea primelor 10 actiuni/interogari
         Doctor doc1 = new Doctor();
         doc1.setLastName("Miguel");
+        doc1.setFirstName("Miguelito");
         Doctor doc2 = new Doctor();
         doc2.setLastName("Fernando");
+        doc2.setFirstName("Fernandoinho");
 
 
-        Patient patient = new Patient();
+        Patient patient = new Patient(doc1);
+        patient.setLastName("Mario");
+        patient.setFirstName("Luigi");
+        patient.setCnp("5210409448407");
         Date dt = new Date();
         Date dtt = addDays(dt, 10);
 
@@ -33,10 +38,10 @@ public class Main {
         os.hireDoctor(doc1);
         os.hireDoctor(doc2);
 
-        os.makeAppointment(patient, doc1, dtt, "Colonoscopy");
-        os.makeAppointment(patient, doc1, dt, "Endoscopy"); // To prove that the set is ordered by date
-        os.makeAppointment(patient, doc2, dt, "Auscultation");
-        os.makeAppointment(patient, doc2, dtt, "Examination");
+        os.makeAppointment(patient, doc1, dtt, "Colonoscopy", new String[] {"441", "Perodixyl"});
+        os.makeAppointment(patient, doc1, dt, "Endoscopy", new String[] {"221", "Tetraoxycilin"}); ; // To prove that the set is ordered by date
+        os.makeAppointment(patient, doc2, dt, "Auscultation", new String[] {"112", "37.8"});
+        os.makeAppointment(patient, doc2, dtt, "Examination", new String[] {"general examination"});
 
         System.out.println(doc1.getAppointments());
         os.cancelAppointment(patient, doc1, dtt);
@@ -55,7 +60,7 @@ public class Main {
         String description = "Subsemnatul este apt pentru educatie fizica!";
         os.signCertificate(doc1, patient, dt, description);
 
-        System.out.println(doc1.getSignedDocuments().toString());
+        System.out.println(doc1.getSignedDocuments());
 
         System.out.println("-----------------------------------------------");
 

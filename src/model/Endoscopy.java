@@ -6,9 +6,10 @@ import java.util.Date;
 
 @Data
 public class Endoscopy extends Test{
-    private final Double cost = 250.0;
+    private String sedative;
 
-    public Endoscopy(String type, Patient patient, Doctor doctor, Date date){
-        super(type, patient, doctor, date);
+    public Endoscopy(Patient patient, Doctor doctor, Date date, Integer noReservedMachine, String sedative){
+        super(patient, doctor, date, 250.0, noReservedMachine);
+        this.sedative = sedative;
     }
 }
