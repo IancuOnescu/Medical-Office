@@ -14,6 +14,7 @@ import java.util.TreeSet;
 @Data
 public class OfficeService {
     Office office;
+    LoggingService logService = new LoggingService();
 
     //We spcifically define the param constr so we don't have a blank one
     public OfficeService(Office office){
@@ -30,6 +31,7 @@ public class OfficeService {
             if(sdf.format(date).equals(sdf.format(ap.getDate())))
                 ret.add(ap);
 
+        logService.logAction("getDoctorAgenda");
         return ret;
     }
 
@@ -40,6 +42,7 @@ public class OfficeService {
             if (app.getDate().equals(date))
                 return false;
 
+        logService.logAction("isAvailable");
         return true;
     }
 
@@ -63,6 +66,7 @@ public class OfficeService {
             default: return;
         }
         appointments.add(ap);
+        logService.logAction("makeAppointment");
     }
 
     public void cancelAppointment(@NotNull Patient patient, @NotNull Doctor doctor, @NotNull Date date){
@@ -74,6 +78,7 @@ public class OfficeService {
                 return;
             }
 
+        logService.logAction("cancelAppointment");
     }
 
     public HashSet<Appointment> getPatientHistory(@NotNull Patient patient){
@@ -88,6 +93,7 @@ public class OfficeService {
                     ret.add(app);
         }
 
+        logService.logAction("getPatientHistory");
         return ret;
     }
 
@@ -95,17 +101,22 @@ public class OfficeService {
         Certificate cert = new Certificate(date, doctor, patient, description);
 
         HashSet<Document> rel = doctor.getSignedDocuments();
+        logService.logAction("signCertificate");
         rel.add(cert);
     }
 
     public void hireDoctor(Doctor doctor){
         HashSet<Doctor> docs = this.office.getDoctors();
         docs.add(doctor);
+
+        logService.logAction("hireDoctor");
     }
 
     public void removeDoctor(Doctor doctor){
         HashSet<Doctor> docs = this.office.getDoctors();
         docs.remove(doctor);
+
+        logService.logAction("removeDoctor");
     }
 
     public void transferAppointment(Doctor fromDoctor, Doctor toDoctor, Patient patient, Date date){
@@ -119,6 +130,8 @@ public class OfficeService {
                 toApointments.add(ap);
                 return;
             }
+
+        logService.logAction("transferAppointment");
     }
 
     public HashSet<Doctor> availableDoctors(Date date){
@@ -129,6 +142,7 @@ public class OfficeService {
             if(isAvailable(doc, date))
                 ret.add(doc);
 
+        logService.logAction("transferAppointment");
         return ret;
     }
 }
