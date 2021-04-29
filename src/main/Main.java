@@ -2,8 +2,12 @@ package main;
 
 import model.*;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.*;
 import service.*;
+
+import javax.print.Doc;
 
 public class Main {
     public static Date addDays(Date date, int days)
@@ -14,10 +18,10 @@ public class Main {
         return cal.getTime();
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException, ParseException {
 
         //Prezentarea primelor 10 actiuni/interogari
-        Doctor doc1 = new Doctor();
+        /*Doctor doc1 = new Doctor();
         doc1.setLastName("Miguel");
         doc1.setFirstName("Miguelito");
         Doctor doc2 = new Doctor();
@@ -75,6 +79,38 @@ public class Main {
 
         System.out.println("-----------------------------------------------");
 
-        System.out.println(os.availableDoctors(dtt));
+        System.out.println(os.availableDoctors(dtt));*/
+
+
+        ///Testing new stuff TO DO: Design tweaks and correct placement of WriterService
+        Office off = new Office();
+
+        OfficeService os = new OfficeService(off);
+        FileReaderService svc = FileReaderService.FileReaderService();
+        FileWriterService fws = FileWriterService.FileWriterService();
+
+        HashSet<Patient> pats = svc.loadPatients();
+
+        Doctor doc1 = new Doctor("Oliver1", "Erfan1","5150015079800", new Integer[] {0, 7, 1, 2, 3, 1, 2, 3, 1, 2},112);
+        os.hireDoctor(doc1);
+
+        Patient patient = new Patient("John1", "Travolta1" ,"4510416016541", new Integer[] {0, 7, 1, 2, 3, 1, 2, 3, 1, 2});
+        System.out.println(patient);
+        pats.add(patient);
+        pats.forEach(System.out :: println);
+        fws.writePatients(pats);
+
+        Date dt = new Date();
+        String description = "Subsemnatul este apt pentru educatie fizica!";
+        HashSet<Document> documents = new HashSet<>();
+        Certificate cert = new Certificate(dt, doc1, new String[]{patient.getFirstName(), description});
+        cert.setPatient(patient);
+        documents.add(cert);
+        fws.writeDocuments(documents);
+
+        HashSet<Doctor> docs = off.getDoctors();
+        for(Doctor doc : docs)
+            if(doc.getLastName().equals("Erfan"))
+                fws.writeAppointments(doc.getAppointments());
     }
 }

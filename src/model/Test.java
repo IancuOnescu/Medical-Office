@@ -15,4 +15,6 @@ public abstract class Test extends Appointment{
         super(patient, doctor, date, cost);
         this.noReservedMachine = noReservedMachine;
     }
+
+    public abstract String getArgs();
 }

@@ -12,4 +12,8 @@ public class Colonoscopy extends Test{
         super(patient, doctor, date, 450.0, noReservedMachine);
         this.preparingDrugs = preparingDrugs;
     }
+
+    public String getArgs(){
+        return preparingDrugs;
+    }
 }

@@ -8,9 +8,13 @@ public class Certificate extends Document{
     private Patient patient;
     private String description;
 
-    public Certificate(Date date, Doctor doctor, Patient patient, String description){
+    public Certificate(Date date, Doctor doctor, String[] args){
         super(date, doctor);
         this.patient = patient;
         this.description = description;
+    }
+
+    public String getArgs(){
+        return patient.toString() + "/" + description;
     }
 }

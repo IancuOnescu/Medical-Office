@@ -11,4 +11,6 @@ abstract public class Document {
     private Doctor doctor;
 
     public Document(){}
+
+    public abstract String getArgs();
 }

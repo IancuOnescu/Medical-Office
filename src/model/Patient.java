@@ -10,6 +10,10 @@ import java.util.Objects;
 public class Patient extends Entity{
     private Doctor familyDoctor;
 
+    public Patient(String firstName, String lastName, String CNP, Integer[] phoneNumber){
+        super(firstName, lastName, CNP, phoneNumber);
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(super.getLastName(), super.getFirstName(), super.getCnp());
@@ -22,5 +26,10 @@ public class Patient extends Entity{
 
         final Patient app = (Patient) obj;
         return super.getCnp().equals(app.getCnp()) && this.getLastName().equals(app.getLastName()) && this.getFirstName().equals(app.getFirstName());
+    }
+
+    @Override
+    public String toString() {
+        return super.getLastName() + " " + super.getFirstName();
     }
 }

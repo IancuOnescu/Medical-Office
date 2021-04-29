@@ -15,6 +15,8 @@ abstract public class Appointment {
 
     public Appointment(){}
 
+    public abstract String getArgs();
+
     @Override
     public int hashCode() {
         return Objects.hash(patient, doctor, date, cost);

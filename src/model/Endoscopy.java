@@ -12,4 +12,8 @@ public class Endoscopy extends Test{
         super(patient, doctor, date, 250.0, noReservedMachine);
         this.sedative = sedative;
     }
+
+    public String getArgs(){
+        return sedative;
+    }
 }

@@ -12,4 +12,8 @@ public class Auscultation extends Test{
         super(patient, doctor, date, 100.0, noReservedMachine);
         this.temperature = temperature;
     }
+
+    public String getArgs(){
+        return String.valueOf(temperature);
+    }
 }

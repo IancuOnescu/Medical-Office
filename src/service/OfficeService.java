@@ -4,7 +4,8 @@ import lombok.Data;
 import model.*;
 import org.jetbrains.annotations.NotNull;
 
-import javax.print.Doc;
+import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.Date;
@@ -13,12 +14,17 @@ import java.util.TreeSet;
 
 @Data
 public class OfficeService {
-    Office office;
-    LoggingService logService = new LoggingService();
+    private Office office;
+    private LoggingService logService = new LoggingService();
+    private FileReaderService fls = FileReaderService.FileReaderService();
+    private FileWriterService fws = FileWriterService.FileWriterService();
 
     //We spcifically define the param constr so we don't have a blank one
-    public OfficeService(Office office){
+    public OfficeService(Office office) throws IOException, ParseException {
         this.office = office;
+        fls.loadDoctors(this.office);
+        fls.loadAppointments(this.office);
+        fls.loadDocuments(this.office);
     }
 
     public TreeSet<Appointment> getDoctorAgenda(Doctor doctor, Date date){
@@ -98,11 +104,11 @@ public class OfficeService {
     }
 
     public void signCertificate(Doctor doctor, Patient patient, Date date, String description){
-        Certificate cert = new Certificate(date, doctor, patient, description);
+        Certificate cert = new Certificate(date, doctor, new String[]{patient.getFirstName(), description});
 
         HashSet<Document> rel = doctor.getSignedDocuments();
         logService.logAction("signCertificate");
-        rel.add(cert);
+        rel.add(cert);;
     }
 
     public void hireDoctor(Doctor doctor){
@@ -110,6 +116,7 @@ public class OfficeService {
         docs.add(doctor);
 
         logService.logAction("hireDoctor");
+        fws.writeDoctors(office);
     }
 
     public void removeDoctor(Doctor doctor){

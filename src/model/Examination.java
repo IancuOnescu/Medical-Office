@@ -12,4 +12,8 @@ public class Examination extends Appointment{
         super(patient, doctor, date, 100.0);
         this.type = type;
     }
+
+    public String getArgs(){
+        return type;
+    }
 }

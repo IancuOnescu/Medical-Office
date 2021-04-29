@@ -14,6 +14,10 @@ public class Doctor extends Entity{
     private int noOffice;
 
     public Doctor(){}
+    public Doctor(String firstName, String lastName, String CNP, Integer[] phoneNumber, int noOffice) {
+        super(firstName, lastName, CNP, phoneNumber);
+        this.noOffice = noOffice;
+    }
 
     @Override
     public int hashCode() {
