@@ -21,7 +21,7 @@ public class Doctor extends Entity{
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.getLastName(), super.getFirstName(), appointments, signedDocuments);
+        return Objects.hash(super.getLastName(), super.getFirstName(), super.getCnp());
     }
     @Override
     public boolean equals(Object obj){

@@ -3,6 +3,7 @@ package model;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.Objects;
 
 @Data
 public class Prescription extends Document{
@@ -14,5 +15,9 @@ public class Prescription extends Document{
     }
     public String getArgs(){
         return String.join("/", meds) + "/" + patient.toString();
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.getDoctor(), super.getDate());
     }
 }

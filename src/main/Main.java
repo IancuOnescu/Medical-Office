@@ -1,13 +1,23 @@
 package main;
 
+import com.mysql.cj.jdbc.MysqlDataSource;
 import model.*;
+import config.*;
 
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.*;
 import service.*;
+import java.sql.*;
+import java.util.Date;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.print.Doc;
+import javax.sql.DataSource;
+import javax.swing.text.html.HTMLDocument;
+import javax.xml.transform.Result;
 
 public class Main {
     public static Date addDays(Date date, int days)
@@ -18,7 +28,7 @@ public class Main {
         return cal.getTime();
     }
 
-    public static void main(String[] args) throws IOException, ParseException {
+    public static void main(String[] args) throws IOException, ParseException, SQLException {
 
         //Prezentarea primelor 10 actiuni/interogari
         /*Doctor doc1 = new Doctor();
@@ -83,6 +93,7 @@ public class Main {
 
 
         ///Testing new stuff TO DO: Design tweaks and correct placement of WriterService
+        /*
         Office off = new Office();
 
         OfficeService os = new OfficeService(off);
@@ -112,5 +123,75 @@ public class Main {
         for(Doctor doc : docs)
             if(doc.getLastName().equals("Erfan"))
                 fws.writeAppointments(doc.getAppointments());
+
+        try {
+            Connection conn = DatabaseConnection.getInstance();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM medical_office.test");
+
+            while (rs.next()) {
+                System.out.println(rs.getString("id") + ", " + rs.getString("testcol"));
+            }
+
+            String sql = "insert into medical_office.test values (?, ?) ";
+            try (PreparedStatement statement = conn.prepareStatement(sql)) {//try with resources
+                statement.setString(1, "2");
+                statement.setString(2, "hello fro");
+                statement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        */
+
+        //--------------------------------------------------------------
+        //--------------------------------------------------------------
+        //             Testing the crud functionalities
+        //--------------------------------------------------------------
+        
+
+        Office off = new Office();
+        Date dtt = new Date();
+        OfficeCRUDService ocs = new OfficeCRUDService(off);
+
+        OfficeDatabseService officeDatabseService = new OfficeDatabseService(off);
+        Doctor doc = new Doctor("Olimpia","Jaci","6170315107213",new Integer[] {0, 7, 3, 2, 1, 3, 2, 1, 2, 3},113);
+        ocs.hireDoctor(doc);
+
+        Patient patient = new Patient("John1", "Travolta1" ,"4510416016541", new Integer[] {0, 7, 1, 2, 3, 1, 2, 3, 1, 2}, doc);
+        //ocs.addPatient(patient);
+        //patient.setPhoneNumber(new Integer[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
+        //ocs.updatePatient(patient);
+
+        HashSet<Doctor> docs = off.getDoctors();
+        Iterator<Doctor> docIter = docs.iterator();
+
+        HashSet<Patient> pats = officeDatabseService.loadPatients();
+        pats.forEach(System.out :: println);
+
+        //ocs.makeAppointment(pats.iterator().next(), docs.iterator().next(), dtt, "colonoscopy", new String[] {"441", "Perodixyl"});
+        //ocs.cancelAppointment(pats.iterator().next(), docs.iterator().next(), dtt);
+        //ocs.transferAppointment(docIter.next(), docIter.next(), pats.iterator().next(), dtt);
+
+        //ocs.removeDoctor(doc);
+
+        //docs.iterator().next().setPhoneNumber(new Integer[] {0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
+        //ocs.updateDoctor(docs.iterator().next());
+
+        ocs.removePatient(patient);
+        Certificate cert = new Certificate(dtt, docs.iterator().next(), new String[]{});
+        cert.setPatient(pats.iterator().next());
+        cert.setDescription("Apt din punct de vedere fizic");
+        ocs.addDocument(cert);
+        cert.setDescription("Apt din punct de vedere fizic -- updated");
+        //ocs.updateDocument(cert);
+        //ocs.removeDocument(cert);
     }
 }

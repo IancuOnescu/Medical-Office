@@ -2,6 +2,7 @@ package model;
 
 import lombok.Data;
 import java.util.Date;
+import java.util.Objects;
 
 @Data
 public class Certificate extends Document{
@@ -16,5 +17,10 @@ public class Certificate extends Document{
 
     public String getArgs(){
         return patient.toString() + "/" + description;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.getDoctor(), super.getDate());
     }
 }

@@ -3,6 +3,7 @@ package model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import javax.print.Doc;
 import java.util.HashSet;
 import java.util.Objects;
 
@@ -12,6 +13,10 @@ public class Patient extends Entity{
 
     public Patient(String firstName, String lastName, String CNP, Integer[] phoneNumber){
         super(firstName, lastName, CNP, phoneNumber);
+    }
+    public Patient(String firstName, String lastName, String CNP, Integer[] phoneNumber, Doctor doc){
+        super(firstName, lastName, CNP, phoneNumber);
+        this.familyDoctor = doc;
     }
 
     @Override
